@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Chat with AI</title>
+  <style>
+    #chat-box {
+      border: 1px solid #ccc;
+      padding: 10px;
+      height: 300px;
+      overflow-y: auto;
+      margin-bottom: 10px;
+    }
+    .user { color: blue; }
+    .bot  { color: green; }
+    form { display: flex; }
+    input { flex: 1; padding: 5px; }
+    button { padding: 5px 10px; }
+  </style>
+</head>
+<body>
+<h2>AI Chat</h2>
+<div id="chat-box"></div>
+<form id="chat-form">
+  <input id="msg" type="text" autocomplete="off" placeholder="Type your message…" />
+  <button type="submit">Send</button>
+</form>
+
+<script>
+  const form = document.getElementById('chat-form');
+  const box  = document.getElementById('chat-box');
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const text = document.getElementById('msg').value.trim();
+    if (!text) return;
+
+    // display user message
+    const userDiv = document.createElement('div');
+    userDiv.className = 'user';
+    userDiv.innerHTML = '<b>You:</b> ' + text;
+    box.appendChild(userDiv);
+
+    // call chat API
+    const response = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt: text })
+    });
+    const reply = await response.text();
+
+    // display AI reply
+    const botDiv = document.createElement('div');
+    botDiv.className = 'bot';
+    botDiv.innerHTML = '<b>AI:</b> ' + reply;
+    box.appendChild(botDiv);
+
+    box.scrollTop = box.scrollHeight;
+    form.reset();
+    document.getElementById('msg').focus();
+  });
+</script>
+</body>
+</html>
