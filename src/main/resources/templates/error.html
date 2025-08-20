@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Error</title>
+    <style>
+        body { font-family: system-ui, Segoe UI, Roboto, Arial, sans-serif; background:#f8f9fa; padding:30px; }
+        .card { background:#fff; border:1px solid #ddd; border-radius:8px; padding:20px; max-width:720px; margin:auto; }
+        h1 { margin:0 0 10px; font-size:20px; }
+        .meta { color:#666; font-size:14px; margin-top:10px; }
+        a.button { display:inline-block; margin-top:16px; padding:8px 12px; border:1px solid #ccc; border-radius:6px; text-decoration:none; color:#333; background:#f5f5f5; }
+        a.button:hover { background:#eee; }
+        code { background:#f6f8fa; padding:2px 4px; border-radius:4px; }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h1>Something went wrong</h1>
+    <p th:text="${message}">An unexpected error occurred.</p>
+
+    <div class="meta">
+        <div>Status: <code th:text="${status}">500</code></div>
+        <div>Path: <code th:text="${path}">/unknown</code></div>
+        <div th:if="${error}">Error: <code th:text="${error}">Internal Server Error</code></div>
+        <div th:if="${exception}">Exception: <code th:text="${exception}">n/a</code></div>
+    </div>
+
+    <a class="button" th:href="@{/}">Back to home</a>
+</div>
+</body>
+</html>
