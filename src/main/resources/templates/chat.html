@@ -1,80 +1,99 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
   <meta charset="UTF-8"/>
-  <title>Chat with AI</title>
+  <title>Chat</title>
   <style>
-    body { font-family: system-ui, sans-serif; margin: 20px; background: #f8f9fa; }
-    .topbar { display: flex; justify-content: space-between; background: #fff; padding: 10px 15px; border: 1px solid #ddd; border-radius: 6px; margin-bottom: 15px; }
-    .welcome { font-weight: 500; color: #333; }
-    .logout-btn { background: transparent; border: 1px solid #ccc; border-radius: 4px; color: #c00; font-weight: 600; padding: 6px 10px; cursor: pointer; }
-    .logout-btn:hover { background: #fff3f3; }
-    #chat-box { border: 1px solid #ccc; background: #fff; padding: 10px; height: 300px; overflow-y: auto; margin-bottom: 10px; border-radius: 6px; }
-    .user { color: #0b63ce; margin: 6px 0; }
-    .bot { color: #0a7a27; margin: 6px 0; }
-    form#chat-form { display: flex; gap: 8px; }
-    input#msg { flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
-    button[type="submit"] { padding: 8px 12px; border: 1px solid #ccc; border-radius: 4px; background: #f5f5f5; cursor: pointer; }
-    button[type="submit"]:hover { background: #eee; }
+    body {
+      font-family: sans-serif;
+      background: #f0f2f5;
+      margin: 0;
+      padding: 0;
+    }
+    .header {
+      background: #0b63ce;
+      color: white;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .chat-container {
+      padding: 20px;
+    }
+    .chat-box {
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 10px;
+      height: 300px;
+      overflow-y: auto;
+      background: white;
+    }
+    .chat-input {
+      margin-top: 15px;
+      display: flex;
+      flex-direction: column;
+    }
+    .chat-input label {
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    .chat-input input {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .chat-input button {
+      margin-top: 10px;
+      padding: 8px 12px;
+      background: #0b63ce;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .chat-input button:hover {
+      background: #094a99;
+    }
+    .logout-button {
+      background: white;
+      color: #0b63ce;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .logout-button:hover {
+      background: #e6e6e6;
+    }
   </style>
 </head>
 <body>
-
-<div class="topbar">
-  <div class="welcome">
-    Welcome, <span th:text="${#authentication?.name ?: 'Guest'}">Guest</span>
+<div class="header">
+  <div>
+    <p th:if="${#authentication != null}">
+      Welcome, <span th:text="${#authentication.name}">User</span>
+    </p>
+    <p th:unless="${#authentication != null}">
+      Welcome, Guest
+    </p>
   </div>
-  <form th:if="${#authentication != null}" th:action="@{/logout}" method="post" style="margin:0;">
-    <button type="submit" class="logout-btn">Logout</button>
+  <form th:action="@{/logout}" method="post" th:if="${#authentication != null}">
+    <button type="submit" class="logout-button">Logout</button>
   </form>
 </div>
 
-<div id="chat-box"></div>
+<div class="chat-container">
+  <div class="chat-box" id="chatBox">
+    <!-- Messages will appear here -->
+  </div>
 
-<form id="chat-form">
-  <input id="msg" type="text" autocomplete="off" placeholder="Type your message…" autofocus />
-  <button type="submit">Send</button>
-</form>
-
-<!-- Error helpers FIRST -->
-<script src="/js/chat-errors.js"></script>
-
-<!-- Main chat logic -->
-<script>
-  const form = document.getElementById('chat-form');
-  const box  = document.getElementById('chat-box');
-  const input = document.getElementById('msg');
-
-  function appendLine(roleClass, label, text) {
-    const line = document.createElement('div');
-    line.className = roleClass;
-    const strong = document.createElement('b');
-    strong.textContent = label;
-    line.appendChild(strong);
-    line.appendChild(document.createTextNode(' ' + text));
-    box.appendChild(line);
-    box.scrollTop = box.scrollHeight;
-  }
-
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const text = input.value.trim();
-    if (!text) return;
-    appendLine('user', 'You:', text);
-
-    const res = await fetchWithChatErrorHandling('/api/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({ prompt: text })
-    });
-
-    if (res) {
-      appendLine('bot', 'AI:', await res.text());
-    }
-    form.reset();
-    input.focus();
-  });
-</script>
-
+  <form class="chat-input" th:action="@{/api/chat}" method="post">
+    <label for="prompt">Message</label>
+    <input type="text" id="prompt" name="prompt" placeholder="Type your message..." required />
+    <button type="submit">Send</button>
+  </form>
+</div>
 </body>
 </html>

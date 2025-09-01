@@ -20,13 +20,8 @@ public class WebController {
         this.encoder = encoder;
     }
 
-    /**
-     * Map root ("/") directly to the chat page.
-     * This avoids the 404 when visiting http://localhost:8080/
-     */
     @GetMapping("/")
     public String home(Authentication authentication, Model model) {
-        // Pass current username or null to the template
         if (authentication != null) {
             model.addAttribute("username", authentication.getName());
         }
@@ -45,11 +40,18 @@ public class WebController {
     }
 
     @PostMapping("/register")
-    public String register(@ModelAttribute User user, BindingResult res) {
+    public String register(@ModelAttribute User user, BindingResult res, Model model) {
         if (res.hasErrors()) {
+            model.addAttribute("error", "Invalid input. Please try again.");
             return "register";
         }
-        // Encode password before saving
+
+        if (userRepo.findByUsername(user.getUsername()) != null) {
+            model.addAttribute("user", user);
+            model.addAttribute("error", "Username already exists. Please choose another.");
+            return "register";
+        }
+
         user.setPassword(encoder.encode(user.getPassword()));
         userRepo.save(user);
         return "redirect:/login";
@@ -57,7 +59,6 @@ public class WebController {
 
     @GetMapping("/chat")
     public String chat(Authentication authentication, Model model) {
-        // Also available on direct /chat route
         if (authentication != null) {
             model.addAttribute("username", authentication.getName());
         }
