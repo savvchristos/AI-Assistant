@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8"/>
   <title>Chat</title>
+  <meta name="_csrf" th:content="${_csrf.token}"/>
+  <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
   <style>
     body {
       font-family: sans-serif;
@@ -28,6 +30,12 @@
       height: 300px;
       overflow-y: auto;
       background: white;
+    }
+    .chat-box p {
+      margin: 8px 0;
+      padding: 6px 10px;
+      background: #e9f1ff;
+      border-radius: 4px;
     }
     .chat-input {
       margin-top: 15px;
@@ -85,15 +93,44 @@
 </div>
 
 <div class="chat-container">
-  <div class="chat-box" id="chatBox">
-    <!-- Messages will appear here -->
-  </div>
+  <div class="chat-box" id="chatBox"></div>
 
-  <form class="chat-input" th:action="@{/api/chat}" method="post">
+  <div class="chat-input">
     <label for="prompt">Message</label>
     <input type="text" id="prompt" name="prompt" placeholder="Type your message..." required />
-    <button type="submit">Send</button>
-  </form>
+    <button type="button" onclick="sendMessage()">Send</button>
+  </div>
 </div>
+
+<script>
+  async function sendMessage() {
+    const prompt = document.getElementById("prompt").value;
+    if (!prompt) return;
+
+    const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+    const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
+    const response = await fetch("/api/chat?prompt=" + encodeURIComponent(prompt), {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        [header]: token
+      }
+    });
+
+    if (response.ok) {
+      const reply = await response.text();
+      const chatBox = document.getElementById("chatBox");
+      const message = document.createElement("p");
+      message.innerHTML = `<strong>AI:</strong> ${reply}`;
+      chatBox.appendChild(message);
+      chatBox.scrollTop = chatBox.scrollHeight;
+      document.getElementById("prompt").value = "";
+    } else {
+      alert("Something went wrong: " + response.status);
+    }
+  }
+</script>
 </body>
 </html>

@@ -1,7 +1,7 @@
 package com.aiassistant.aiassistant.controller;
 
 import com.aiassistant.aiassistant.model.User;
-import com.aiassistant.aiassistant.model.UserRepository;
+import com.aiassistant.aiassistant.repository.UserRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;

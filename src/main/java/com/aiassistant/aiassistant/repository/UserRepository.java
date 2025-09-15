@@ -1,5 +1,6 @@
-package com.aiassistant.aiassistant.model;
+package com.aiassistant.aiassistant.repository;
 
+import com.aiassistant.aiassistant.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Long> {
