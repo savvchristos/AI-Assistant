@@ -3,6 +3,7 @@ package com.aiassistant.aiassistant.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
 import java.util.Objects;
 
 @Getter
@@ -18,8 +19,11 @@ public class User {
     @Column(unique = true, nullable = false)
     private String username;
 
-    @Column(nullable = false)
+    @Column(nullable = true) // Allow null for OAuth2 users
     private String password;
+
+    @Column(name = "display_name", nullable = true)
+    private String displayName;
 
     // Constructors
     public User() {}
@@ -27,6 +31,7 @@ public class User {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+        this.displayName = username; // Default display name matches username
     }
 
     // equals() and hashCode() for proper comparison

@@ -1,7 +1,7 @@
 package com.aiassistant.aiassistant.controller;
 
 import com.aiassistant.aiassistant.model.User;
-import com.aiassistant.aiassistant.repository.UserRepository;
+import com.aiassistant.aiassistant.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -12,18 +12,22 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class WebController {
 
-    private final UserRepository userRepo;
+    private final UserService userService;
     private final PasswordEncoder encoder;
 
-    public WebController(UserRepository userRepo, PasswordEncoder encoder) {
-        this.userRepo = userRepo;
+    public WebController(UserService userService, PasswordEncoder encoder) {
+        this.userService = userService;
         this.encoder = encoder;
     }
 
     @GetMapping("/")
     public String home(Authentication authentication, Model model) {
         if (authentication != null) {
-            model.addAttribute("username", authentication.getName());
+            String username = authentication.getName();
+            model.addAttribute("username", username);
+
+            // Ensure user exists in DB
+            userService.getOrCreateUser(username);
         }
         return "chat";
     }
@@ -46,21 +50,25 @@ public class WebController {
             return "register";
         }
 
-        if (userRepo.findByUsername(user.getUsername()) != null) {
+        if (userService.getUserByUsername(user.getUsername()) != null) {
             model.addAttribute("user", user);
             model.addAttribute("error", "Username already exists. Please choose another.");
             return "register";
         }
 
         user.setPassword(encoder.encode(user.getPassword()));
-        userRepo.save(user);
+        userService.saveUser(user);
         return "redirect:/login";
     }
 
     @GetMapping("/chat")
     public String chat(Authentication authentication, Model model) {
         if (authentication != null) {
-            model.addAttribute("username", authentication.getName());
+            String username = authentication.getName();
+            model.addAttribute("username", username);
+
+            // Ensure user exists in DB
+            userService.getOrCreateUser(username);
         }
         return "chat";
     }
