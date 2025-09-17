@@ -24,7 +24,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getUsername())
-                .password(user.getPassword() != null ? user.getPassword() : "dummy-password") // fallback for OAuth2
+                .password(user.getPassword() != null ? user.getPassword() : "dummy-password")
                 .roles("USER")
                 .build();
     }

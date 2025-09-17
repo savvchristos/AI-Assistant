@@ -1,5 +1,6 @@
 package com.aiassistant.aiassistant.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.Instant;
 
@@ -12,9 +13,18 @@ public class Message {
     private Long id;
 
     private String content;
-    private Long chatId;
-    private Instant createdAt;
-    private Long createdByUserId;
+
+    private Instant createdAt = Instant.now();
+
+    @ManyToOne
+    @JoinColumn(name = "thread_id")
+    @JsonIgnore // ✅ Prevent recursion from Message → Thread → Messages → Thread
+    private ChatThread thread;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonIgnore // ✅ Prevent recursion from Message → User → Messages → User
+    private User user;
 
     // Getters and setters
     public Long getId() { return id; }
@@ -23,12 +33,12 @@ public class Message {
     public String getContent() { return content; }
     public void setContent(String content) { this.content = content; }
 
-    public Long getChatId() { return chatId; }
-    public void setChatId(Long chatId) { this.chatId = chatId; }
-
     public Instant getCreatedAt() { return createdAt; }
     public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }
 
-    public Long getCreatedByUserId() { return createdByUserId; }
-    public void setCreatedByUserId(Long createdByUserId) { this.createdByUserId = createdByUserId; }
+    public ChatThread getThread() { return thread; }
+    public void setThread(ChatThread thread) { this.thread = thread; }
+
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
 }

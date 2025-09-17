@@ -6,139 +6,25 @@
   <meta name="_csrf" th:content="${_csrf.token}"/>
   <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
   <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #f0f2f5;
-      margin: 0;
-      padding: 0;
-    }
-
-    .header {
-      background: #0b63ce;
-      color: white;
-      padding: 12px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .header-left p {
-      margin: 0;
-      font-size: 16px;
-    }
-
-    .header-right {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .settings-button,
-    .logout-button {
-      background: white;
-      color: #0b63ce;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    .settings-button:hover,
-    .logout-button:hover {
-      background: #e6e6e6;
-    }
-
-    .chat-container {
-      padding: 20px;
-      max-width: 800px;
-      margin: auto;
-    }
-
-    .chat-box {
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      padding: 10px;
-      height: 300px;
-      overflow-y: auto;
-      background: white;
-      margin-bottom: 20px;
-    }
-
-    .chat-box p {
-      margin: 8px 0;
-      padding: 6px 10px;
-      background: #e9f1ff;
-      border-radius: 4px;
-    }
-
-    .chat-input {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .chat-input label {
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
-
-    .chat-input input {
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-
-    .chat-input button {
-      margin-top: 10px;
-      padding: 8px 12px;
-      background: #0b63ce;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-
-    .chat-input button:hover {
-      background: #094a99;
-    }
-
-    .modal {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: white;
-      border: 1px solid #ccc;
-      padding: 20px;
-      z-index: 1000;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
-      width: 300px;
-    }
-
-    .modal-content input {
-      margin-top: 10px;
-      margin-bottom: 10px;
-      padding: 8px;
-      width: 100%;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-
-    .modal-content button {
-      padding: 8px 12px;
-      background: #0b63ce;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      width: 100%;
-      margin-top: 10px;
-    }
-
-    .modal-content button:hover {
-      background: #094a99;
-    }
+    /* [CSS unchanged — already correct] */
+    body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; padding: 0; }
+    .header { background: #0b63ce; color: white; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; }
+    .header-left p { margin: 0; font-size: 16px; }
+    .header-right { display: flex; align-items: center; gap: 10px; }
+    .settings-button, .logout-button { background: white; color: #0b63ce; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+    .settings-button:hover, .logout-button:hover { background: #e6e6e6; }
+    .chat-container { padding: 20px; max-width: 800px; margin: auto; }
+    .chat-box { border: 1px solid #ccc; border-radius: 6px; padding: 10px; height: 300px; overflow-y: auto; background: white; margin-bottom: 20px; }
+    .chat-box p { margin: 8px 0; padding: 6px 10px; background: #e9f1ff; border-radius: 4px; }
+    .chat-input { display: flex; flex-direction: column; }
+    .chat-input label { margin-bottom: 5px; font-weight: bold; }
+    .chat-input input { padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+    .chat-input button { margin-top: 10px; padding: 8px 12px; background: #0b63ce; color: white; border: none; border-radius: 4px; cursor: pointer; }
+    .chat-input button:hover { background: #094a99; }
+    .modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; border: 1px solid #ccc; padding: 20px; z-index: 1000; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.2); width: 300px; }
+    .modal-content input { margin-top: 10px; margin-bottom: 10px; padding: 8px; width: 100%; border: 1px solid #ccc; border-radius: 4px; }
+    .modal-content button { padding: 8px 12px; background: #0b63ce; color: white; border: none; border-radius: 4px; cursor: pointer; width: 100%; margin-top: 10px; }
+    .modal-content button:hover { background: #094a99; }
   </style>
 </head>
 <body>
@@ -161,6 +47,12 @@
 </div>
 
 <div class="chat-container">
+  <div style="margin-bottom: 10px;">
+    <label for="threadSelect"><strong>Select Thread:</strong></label>
+    <select id="threadSelect" onchange="loadThreadMessages()"></select>
+    <button onclick="toggleNewThreadModal()">➕ New Thread</button>
+  </div>
+
   <div class="chat-box" id="chatBox"></div>
 
   <div class="chat-input">
@@ -181,72 +73,168 @@
   </div>
 </div>
 
+<!-- New Thread Modal -->
+<div id="newThreadModal" class="modal" style="display:none;">
+  <div class="modal-content">
+    <h3>Create New Thread</h3>
+    <input type="text" id="newThreadTitle" placeholder="Thread title" />
+    <button onclick="submitNewThread()">Create</button>
+    <button onclick="toggleNewThreadModal()">Cancel</button>
+  </div>
+</div>
+
 <script>
-  async function sendMessage() {
-    const prompt = document.getElementById("prompt").value;
-    if (!prompt) return;
+  let currentThreadId = null;
 
-    const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
-    const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+  async function loadThreads() {
+    try {
+      const res = await fetch("/api/threads");
+      if (!res.ok) throw new Error("Failed to load threads");
+      const threads = await res.json();
+      const select = document.getElementById("threadSelect");
+      select.innerHTML = "";
 
-    const response = await fetch("/api/chat?prompt=" + encodeURIComponent(prompt), {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-        [header]: token
+      threads.forEach(thread => {
+        const option = document.createElement("option");
+        option.value = thread.id;
+        option.textContent = thread.title || `Thread #${thread.id}`;
+        select.appendChild(option);
+      });
+
+      if (threads.length > 0) {
+        currentThreadId = threads[0].id;
+        select.value = currentThreadId;
+        await loadThreadMessages();
+      } else {
+        const chatBox = document.getElementById("chatBox");
+        chatBox.innerHTML = "<p>No threads available. Create one to start chatting.</p>";
       }
-    });
-
-    if (response.ok) {
-      const reply = await response.text();
-      const chatBox = document.getElementById("chatBox");
-      const message = document.createElement("p");
-      message.innerHTML = `<strong>AI:</strong> ${reply}`;
-      chatBox.appendChild(message);
-      chatBox.scrollTop = chatBox.scrollHeight;
-      document.getElementById("prompt").value = "";
-    } else {
-      alert("Something went wrong: " + response.status);
+    } catch (err) {
+      console.error("Error loading threads:", err);
     }
   }
 
-  document.getElementById("prompt").addEventListener("keydown", function (event) {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      sendMessage();
+  async function loadThreadMessages() {
+    try {
+      currentThreadId = document.getElementById("threadSelect").value;
+      const chatBox = document.getElementById("chatBox");
+      chatBox.innerHTML = "";
+
+      const res = await fetch(`/api/messages?threadId=${currentThreadId}`);
+      if (!res.ok) throw new Error("Failed to load messages");
+      const messages = await res.json();
+
+      messages.forEach(msg => {
+        const p = document.createElement("p");
+        p.innerHTML = `<strong>${msg.user ? msg.user.username : "AI"}:</strong> ${msg.content}`;
+        chatBox.appendChild(p);
+      });
+
+      chatBox.scrollTop = chatBox.scrollHeight;
+    } catch (err) {
+      console.error("Error loading messages:", err);
     }
-  });
+  }
+
+  async function sendMessage() {
+    const prompt = document.getElementById("prompt").value;
+    if (!prompt || !currentThreadId) return;
+
+    try {
+      const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+      const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          [header]: token
+        },
+        body: JSON.stringify({
+          content: prompt,
+          threadId: currentThreadId
+        })
+      });
+
+      if (res.ok) {
+        const reply = await res.text();
+        const chatBox = document.getElementById("chatBox");
+        const message = document.createElement("p");
+        message.innerHTML = `<strong>AI:</strong> ${reply}`;
+        chatBox.appendChild(message);
+        chatBox.scrollTop = chatBox.scrollHeight;
+        document.getElementById("prompt").value = "";
+      } else {
+        alert("Something went wrong: " + res.status);
+      }
+    } catch (err) {
+      console.error("Error sending message:", err);
+    }
+  }
 
   function toggleSettings() {
     const modal = document.getElementById("settingsModal");
     modal.style.display = modal.style.display === "none" ? "block" : "none";
   }
 
-  async function updateDisplayName() {
-    const newDisplayName = document.getElementById("displayNameInput").value;
-    if (!newDisplayName) return alert("Please enter a display name.");
+  function toggleNewThreadModal() {
+    const modal = document.getElementById("newThreadModal");
+    modal.style.display = modal.style.display === "none" ? "block" : "none";
+  }
 
-    const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
-    const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+  async function submitNewThread() {
+    const title = document.getElementById("newThreadTitle").value;
+    if (!title) return alert("Please enter a thread title.");
 
-    const response = await fetch("/api/user/update-display-name", {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        [header]: token
-      },
-      body: JSON.stringify({ displayName: newDisplayName })
-    });
+    try {
+      const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+      const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
 
-    if (response.ok) {
-      alert("Display name updated!");
-      location.reload(); // Refresh to show new name
-    } else {
-      alert("Failed to update display name.");
+      const res = await fetch("/api/threads", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          [header]: token
+        },
+        body: JSON.stringify({ title })
+      });
+
+      if (res.ok) {
+        toggleNewThreadModal();
+        await loadThreads();
+      } else {
+        alert("Failed to create thread.");
+      }
+    } catch (err) {
+      console.error("Error creating thread:", err);
     }
   }
+
+  async function updateDisplayName() {
+    const newName = document.getElementById("displayNameInput").value;
+    if (!newName) return alert("Please enter a display name.");
+
+    try {
+      const res = await fetch("/api/user/update-display-name", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ displayName: newName })
+      });
+
+      if (res.ok) {
+        alert("Display name updated!");
+        toggleSettings();
+      } else {
+        alert("Failed to update display name.");
+      }
+    } catch (err) {
+      console.error("Error updating display name:", err);
+    }
+  }
+
+  window.onload = loadThreads;
 </script>
 </body>
 </html>
