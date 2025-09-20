@@ -30,33 +30,31 @@
 
 Frontend :
 
-\- Η αρχική οθόνη εμφανίζει μήνυμα καλωσορίσματος με το όνομα του χρήστη και παρέχει επιλογές για \*\*Settings\*\* και \*\*Logout\*\*.
+\- Η αρχική οθόνη εμφανίζει μήνυμα καλωσορίσματος με το όνομα του χρήστη και παρέχει επιλογές για \*\*Settings\*\* και \*\*Logout\*\*.  
 
-  !\[Chat-screen](docs/chat-screen.png)
-
-
-
-\- Ο χρήστης μπορεί να επιλέξει ή να δημιουργήσει νέο νήμα συνομιλίας μέσω dropdown με επιλογή \*\*Select Thread\*\* και κουμπί \*\*New Thread\*\*.
-
-  !\[Thread-selection](docs/threads.png)
+&nbsp; !\[Chat-screen](docs/chat-screen.png)
 
 
 
-\- Το ιστορικό μηνυμάτων εμφανίζεται δυναμικά στο κεντρικό τμήμα της σελίδας, ανάλογα με το επιλεγμένο νήμα.
+\- Ο χρήστης μπορεί να επιλέξει ή να δημιουργήσει νέο νήμα συνομιλίας μέσω dropdown με επιλογή \*\*Select Thread\*\* και κουμπί \*\*New Thread\*\*.  
 
-  !\[Assistant-Reply](docs/assistant-reply.png)
-
-
-
-\- Το πεδίο εισαγωγής μηνύματος βρίσκεται στο κάτω μέρος της οθόνης, με placeholder \*"Type your message..."\* και κουμπί \*\*Send\*\* για αποστολή.
-
-  !\[Sending-Message](docs/sending-message.png)
+&nbsp; !\[Thread-selection](docs/threads.png)
 
 
 
-\- Υπάρχει modal για \*\*αλλαγή του display name\*\*, με πεδίο εισαγωγής και κουμπιά \*\*Update\*\* και \*\*Close\*\*.
+\- Το ιστορικό μηνυμάτων εμφανίζεται δυναμικά στο κεντρικό τμήμα της σελίδας, ανάλογα με το επιλεγμένο νήμα.  
 
-  !\[Change-name](docs/change-name.png)
+&nbsp; !\[Assistant-Reply](docs/assistant-reply.png)
 
 
+
+\- Το πεδίο εισαγωγής μηνύματος βρίσκεται στο κάτω μέρος της οθόνης, με placeholder \*"Type your message..."\* και κουμπί \*\*Send\*\* για αποστολή.  
+
+&nbsp; !\[Sending-Message](docs/sending-message.png)
+
+
+
+\- Υπάρχει modal για \*\*αλλαγή του display name\*\*, με πεδίο εισαγωγής και κουμπιά \*\*Update\*\* και \*\*Close\*\*.  
+
+&nbsp; !\[Change-name](docs/change-name.png)
 
