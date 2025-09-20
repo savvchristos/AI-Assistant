@@ -16,6 +16,8 @@
 
 \- Docker: Χρησιμοποιήθηκε για την εκτέλεση του Keycloak, με port mapping και ρυθμίσεις realm/client μέσω του Admin Console.
 
+
+
 Ροή Εργασίας:
 
 \- Ο χρήστης κάνει login μέσω Keycloak.
@@ -28,33 +30,35 @@
 
 \- Η απάντηση του μοντέλου επιστρέφεται και εμφανίζεται στο frontend.
 
+
+
 Frontend :
 
 \- Η αρχική οθόνη εμφανίζει μήνυμα καλωσορίσματος με το όνομα του χρήστη και παρέχει επιλογές για \*\*Settings\*\* και \*\*Logout\*\*.  
 
-&nbsp; !\[Chat-screen](docs/chat-screen.png)
+!\[Chat-screen](docs/chat-screen.png)
 
 
 
 \- Ο χρήστης μπορεί να επιλέξει ή να δημιουργήσει νέο νήμα συνομιλίας μέσω dropdown με επιλογή \*\*Select Thread\*\* και κουμπί \*\*New Thread\*\*.  
 
-&nbsp; !\[Thread-selection](docs/threads.png)
+!\[Thread-selection](docs/threads.png)
 
 
 
 \- Το ιστορικό μηνυμάτων εμφανίζεται δυναμικά στο κεντρικό τμήμα της σελίδας, ανάλογα με το επιλεγμένο νήμα.  
 
-&nbsp; !\[Assistant-Reply](docs/assistant-reply.png)
+!\[Assistant-Reply](docs/assistant-reply.png)
 
 
 
 \- Το πεδίο εισαγωγής μηνύματος βρίσκεται στο κάτω μέρος της οθόνης, με placeholder \*"Type your message..."\* και κουμπί \*\*Send\*\* για αποστολή.  
 
-&nbsp; !\[Sending-Message](docs/sending-message.png)
+!\[Sending-Message](docs/sending-message.png)
 
 
 
 \- Υπάρχει modal για \*\*αλλαγή του display name\*\*, με πεδίο εισαγωγής και κουμπιά \*\*Update\*\* και \*\*Close\*\*.  
 
-&nbsp; !\[Change-name](docs/change-name.png)
+!\[Change-name](docs/change-name.png)
 
